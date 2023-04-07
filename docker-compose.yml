@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  square:
+    build: ./square
+    ports:
+      - "8080:80"
+  cube:
+    build: ./cube
+    ports:
+      - "8081:80"
+  web:
+    image: nginx:latest
+    ports:
+      - "8000:80"
+    volumes:
+      - ./myapp:/usr/share/nginx/html
