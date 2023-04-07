@@ -4,13 +4,28 @@ services:
     build: ./square
     ports:
       - "8080:80"
+    depends_on:
+      - memcached
+    environment:
+      - MEMCACHED_HOST=memcached
+      - MEMCACHED_PORT=11211
   cube:
     build: ./cube
     ports:
       - "8081:80"
+    depends_on:
+      - memcached
+    environment:
+      - MEMCACHED_HOST=memcached
+      - MEMCACHED_PORT=11211
   web:
     image: nginx:latest
     ports:
       - "8000:80"
     volumes:
       - ./myapp:/usr/share/nginx/html
+    depends_on:
+      - square
+      - cube
+  memcached:
+    image: memcached:latest
