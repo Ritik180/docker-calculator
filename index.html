@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculate Square and Cube</title>
+</head>
+<body>
+    <h1>Calculate Square and Cube</h1>
+    <label for="num">Enter a number:</label>
+    <input type="number" id="num" name="num"><br><br>
+    <button onclick="calculateSquare()">Calculate Square</button>
+    <button onclick="calculateCube()">Calculate Cube</button><br><br>
+    <label for="result">Result:</label>
+    <input type="text" id="result" name="result" readonly><br><br>
+
+    <script>
+        function calculateSquare() {
+            var num = document.getElementById("num").value;
+            fetch("http://localhost:8080/square/" + num)
+            .then(response => response.text())
+            .then(result => document.getElementById("result").value = result)
+            .catch(error => console.log(error));
+        }
+
+        function calculateCube() {
+            var num = document.getElementById("num").value;
+            fetch("http://localhost:8081/cube/" + num)
+            .then(response => response.text())
+            .then(result => document.getElementById("result").value = result)
+            .catch(error => console.log(error));
+        }
+    </script>
+</body>
+</html>
