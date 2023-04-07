@@ -1,20 +1,10 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import cgi
+from flask import Flask
 
-class RequestHandler(BaseHTTPRequestHandler):
-    
-    def do_POST(self):
-        if self.path == '/cube':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            length = int(self.headers['Content-length'])
-            data = self.rfile.read(length).decode('utf-8')
-            number = int(cgi.parse_qs(data)['number'][0])
-            cube = number ** 3
-            self.wfile.write(str(cube).encode('utf-8'))
-        else:
-            self.send_error(404)
+app = Flask(__name__)
 
-server = HTTPServer(('0.0.0.0', 80), RequestHandler)
-server.serve_forever()
+@app.route('/cube/<int:num>')
+def cube(num):
+    return f'The cube of {num} is {num**3}'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
