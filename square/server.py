@@ -1,20 +1,10 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import cgi
+from flask import Flask
 
-class RequestHandler(BaseHTTPRequestHandler):
-    
-    def do_POST(self):
-        if self.path == '/square':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
-            length = int(self.headers['Content-length'])
-            data = self.rfile.read(length).decode('utf-8')
-            number = int(cgi.parse_qs(data)['number'][0])
-            square = number ** 2
-            self.wfile.write(str(square).encode('utf-8'))
-        else:
-            self.send_error(404)
+app = Flask(__name__)
 
-server = HTTPServer(('0.0.0.0', 80), RequestHandler)
-server.serve_forever()
+@app.route('/square/<int:num>')
+def square(num):
+    return f'The square of {num} is {num**2}'
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
